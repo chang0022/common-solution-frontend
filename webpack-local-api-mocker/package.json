@@ -1,6 +1,6 @@
 {
   "name": "webpack-local-api-mocker",
-  "version": "1.0.0",
+  "version": "2.9.7",
   "description": "提供了类似webpack-dev-server指令 webpack-dev-server-with-api-mocker",
   "main": "index.js",
   "bin": {
