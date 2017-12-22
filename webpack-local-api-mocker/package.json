@@ -1,0 +1,36 @@
+{
+  "name": "webpack-local-api-mocker",
+  "version": "1.0.0",
+  "description": "提供了类似webpack-dev-server指令 webpack-dev-server-with-api-mocker",
+  "main": "index.js",
+  "bin": {
+    "webpack-dev-server-with-api-mocker": "./src/bin/webpack-dev-server-with-api-mocker.js"
+  },
+  "scripts": {
+    "prebuild": "npm run clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mock",
+    "json-schema",
+    "openapi",
+    "swagger",
+    "webpack"
+  ],
+  "author": "CJ",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^4.0.1"
+  },
+  "dependencies": {
+    "local-api-mocker": "file:../local-api-mocker",
+    "debug": "^3.1.0",
+    "import-local": "^0.1.1",
+    "opn": "^5.1.0",
+    "portfinder": "^1.0.13",
+    "supports-color": "^5.1.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7",
+    "webpack-merge": "^4.1.1"
+  }
+}

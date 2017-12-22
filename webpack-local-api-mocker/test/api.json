@@ -1,0 +1,22 @@
+{
+  "swagger": "2.0-with-api-mocker-1.0",
+  "info": {
+    "title": "测试",
+    "version": "1.0"
+  },
+  "paths": {
+    "/loginStatus": {
+      "get": {
+        "responses": {
+          "302": {
+            "condition": {
+              "script": "!__request.cookies.name"
+            }
+          },
+          "200": {
+          }
+        }
+      }
+    }
+  }
+}

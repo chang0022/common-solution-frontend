@@ -1,0 +1,28 @@
+{
+  "name": "api-mocker",
+  "version": "1.0.0",
+  "description": "API模拟器 扩展了swagger2.0标准 https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md，附加了可控的结果。",
+  "main": "lib/index.js",
+  "scripts": {
+    "clean": "rimraf ./lib",
+    "prebuild": "npm run clean",
+    "build": "babel src --copy-files --source-maps --extensions .es6,.es,.jsx,.js --out-dir lib",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mock",
+    "json-schema",
+    "openapi",
+    "swagger"
+  ],
+  "author": "CJ",
+  "license": "ISC",
+  "dependencies": {
+    "clone": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "rimraf": "^2.6.2"
+  }
+}
