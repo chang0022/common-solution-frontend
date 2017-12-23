@@ -5,7 +5,7 @@ console.log(require('local-api-mocker'));
 const portFinder = require('portfinder');
 const path = require('path');
 const util = require('util');
-const merge = require("webpack-merge");
+const merge = require("merge");
 var support = {};
 
 support.argumentOptions = {

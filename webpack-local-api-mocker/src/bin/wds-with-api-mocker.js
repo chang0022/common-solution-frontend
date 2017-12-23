@@ -70,7 +70,7 @@ const BASIC_GROUP = 'Basic options:';
 const DEFAULT_PORT = 8080;
 
 //修改点1
-const merge = require("webpack-merge");
+const merge = require("merge");
 const support = require("../support");
 
 yargs.options(merge({
