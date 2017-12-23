@@ -1,11 +1,11 @@
 // 提供参数
 const DEFAULT_PORT = 9090;
 const {MockServer, createServerFromLocalFile, createServer} = require('local-api-mocker');
-console.log(require('local-api-mocker'));
+// console.log(require('local-api-mocker'));
 const portFinder = require('portfinder');
 const path = require('path');
 const util = require('util');
-const merge = require("webpack-merge");
+const merge = require("merge");
 var support = {};
 
 support.argumentOptions = {
@@ -48,6 +48,7 @@ function toProxy(server, port) {
             secure: false
         };
     });
+    console.log(proxy);
     return proxy;
 }
 
