@@ -272,6 +272,31 @@ function createVMContentBuffer() {
         '        const context = vm.createContext(parameters);\n');
 }
 
+/**
+ * 路径uri的正则表达式
+ * @type {RegExp}
+ */
+const pathParameterPattern = /{([a-zA-Z0-9-]+)}/;
+
+/**
+ *
+ * @param path openAPI 的path
+ * @return {*} express 服务器认可的uri
+ */
+function toExpressPath(path) {
+    var input = path;
+    while (input.match(pathParameterPattern))
+        input = input.replace(pathParameterPattern, ':$1');
+    return input;
+}
+
+function toProxyPath(path) {
+    var input = path;
+    while (input.match(pathParameterPattern))
+        input = input.replace(pathParameterPattern, '*');
+    return input;
+}
+
 function createServer(remoteFile, dir, cb) {
     console.debug("create server from ", remoteFile, " to ", dir);
     getUri(remoteFile, (err, rs) => {
@@ -342,7 +367,8 @@ function createServer(remoteFile, dir, cb) {
                 // 2, 是否会影响json请求 测试代码
                 // 3, 多包是否正常工作
                 // 其他改进，formParameter 将优先从body中获取 没有则从query中
-                var codeBefore = Buffer.from(util.format('server.%s("%s", upload.array(), function (req, res, next) {\n', method.toLowerCase(), path));
+                var codeBefore = Buffer.from(util.format('server.%s("%s", upload.array(), function (req, res, next) {\n'
+                    , method.toLowerCase(), toExpressPath(path)));
 
                 var codeEnd = Buffer.from('});\n');
 
@@ -362,7 +388,7 @@ function createServer(remoteFile, dir, cb) {
                         Buffer.from(util.format('\n__result={\n' +
                             '    path:"%s",\n' +
                             '    method:"%s"\n' +
-                            '};\n', path, method))
+                            '};\n', toProxyPath(path), method))
                     ]), resolve);
                 }));
             };
