@@ -78,5 +78,8 @@ describe('ServerCreator', function () {
         it('mockHeaderAndCookie', function () {
             return assertSameCode("mockHeaderAndCookie");
         });
+        it('地址参数', function () {
+            return assertSameCode("mockPathParameter");
+        });
     });
 });

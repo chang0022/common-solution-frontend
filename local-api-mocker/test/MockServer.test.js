@@ -131,6 +131,10 @@ describe("MockServer", function () {
             const server = new MockServer(dir + "/mockHeaderAndCookie");
             // server.start();
         });
+        it("地址参数", function () {
+            const server = new MockServer(dir + "/mockPathParameter");
+            // server.start();
+        });
 
     })
 });
