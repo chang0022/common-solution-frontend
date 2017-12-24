@@ -62,16 +62,16 @@ export const SchemaSuggest = {
         };
         // 加入更多info
 
-        schema.definitions.info.properties["id"] = {
-            "type": "string",
-            "description": "A unique id of the API."
-        };
-        schema.definitions.info.properties["branch"] = {
-            "type": "string",
-            "default": "master",
-            "description": "branch of this api."
-        };
-        schema.definitions.info.required.push('id');
+        // schema.definitions.info.properties["id"] = {
+        //     "type": "string",
+        //     "description": "A unique id of the API."
+        // };
+        // schema.definitions.info.properties["branch"] = {
+        //     "type": "string",
+        //     "default": "master",
+        //     "description": "branch of this api."
+        // };
+        // schema.definitions.info.required.push('id');
 
         // cookie
         schema.definitions.cookie = clone(schema.definitions.header);

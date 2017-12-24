@@ -31,8 +31,8 @@ export const KeywordSuggest = {
         return origin
     },
     changeInfo: function (origin) {
-        origin.id = String;
-        origin.branch = String;
+        // origin.id = String;
+        // origin.branch = String;
         return origin;
     }
 };
