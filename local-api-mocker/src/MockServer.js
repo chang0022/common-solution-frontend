@@ -4,7 +4,7 @@
  */
 
 
-
+const sleep = require('thread-sleep');
 const jsonServer = require('json-server');
 const glob = require('glob');
 const fs = require('fs');
@@ -37,6 +37,7 @@ class MockServer {
         this.uris = [];
         this.server = jsonServer.create();
         this.exportJson = this.exportJson.bind(this);
+        this.sleep = this.sleep.bind(this);
         this.validParameter = this.validParameter.bind(this);
         this.buildJsonSchema = this.buildJsonSchema.bind(this);
         this._buildJsonSchema = this._buildJsonSchema.bind(this);
@@ -56,6 +57,7 @@ class MockServer {
         var files = glob.sync(dir + "/**.js");
         const context = vm.createContext({
             exportJson: this.exportJson,
+            sleep: this.sleep,
             validParameter: this.validParameter,
             buildJsonSchema: this.buildJsonSchema,
             upload,
@@ -102,6 +104,21 @@ class MockServer {
         if (definitions)
             schema.definitions = definitions;
         return Promise.resolve(jsf(schema));
+    }
+
+    /**
+     * 停止特定时间
+     * @param toSleep 默认500-2000 ms
+     */
+    sleep(toSleep) {
+        toSleep = toSleep || {};
+        toSleep.type = toSleep.type || 'number';
+        toSleep.minimum = toSleep.minimum || 500;
+        toSleep.maximum = toSleep.maximum || 2000;
+        this.exportJson(null, toSleep)
+            .then(ms => {
+                sleep(ms);
+            });
     }
 
     /**

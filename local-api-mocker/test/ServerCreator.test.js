@@ -81,5 +81,8 @@ describe('ServerCreator', function () {
         it('地址参数', function () {
             return assertSameCode("mockPathParameter");
         });
+        it('休眠', function () {
+            return assertSameCode("mockSleep");
+        });
     });
 });

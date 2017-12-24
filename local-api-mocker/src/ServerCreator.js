@@ -143,12 +143,12 @@ function generateCodeBufferFromParts(part, mapper) {
     return Buffer.concat(parts.map(mapper));
 }
 
-function _renderResultCode(coreBuffer, cookieBuffer, headerBuffer, end) {
-
+function _renderResultCode(beforePromiseBuffer, coreBuffer, promiseBuffer, end) {
     return Buffer.concat([
-        Buffer.from('{\nvar allPromises=[];\n'),
-        cookieBuffer,
-        headerBuffer,
+        Buffer.from('{\n'),
+        beforePromiseBuffer,
+        Buffer.from('var allPromises=[];\n'),
+        promiseBuffer,
         Buffer.from('Promise.all(allPromises)\n' +
             '               .then(()=>{\n'),
         coreBuffer,
@@ -163,23 +163,6 @@ function _renderResultCode(coreBuffer, cookieBuffer, headerBuffer, end) {
  * @param result 结果规格
  */
 function renderResultCode(result, end = false) {
-    // cookie
-    // var cookieBuffer = generateCodeBufferFromParts(result.cookie, ck => {
-    //     var name = generateCodeFromPart(ck.name, 'cookie name');
-    //     var value = generateCodeFromPart(ck.value, 'cookie value');
-    //     return Buffer.from(util.format('if (%s)\n' +
-    //         '            res.cookie(%s, %s);\n' +
-    //         '        else\n' +
-    //         '            res.clearCookie(%s);\n', value, name, value, name));
-    //     // return Buffer.from(util.format('res.cookie(%s, %s);\n', name, value));
-    // });
-    // header
-    // var headerBuffer = generateCodeBufferFromParts(result.header, ck => {
-    //     var name = generateCodeFromPart(ck.name, 'header name');
-    //     var value = generateCodeFromPart(ck.value, 'header value');
-    //     return Buffer.from(util.format('res.set(%s, %s);\n', name, value));
-    // });
-
     var cookieCount = 0;
     var cookies = result.cookies || {};
     var cookieBuffer = Buffer.concat(Object.keys(cookies).map(name => {
@@ -203,12 +186,21 @@ function renderResultCode(result, end = false) {
             '            }));\n', headerCount, header, headerCount, name);
     }).map(str => Buffer.from(str)));
 
+    var sleepBuffer;
+    if (result.hold) {
+        // 默认1-3
+        sleepBuffer = Buffer.from(util.format('sleep(%j);\n', result.hold));
+    } else {
+        sleepBuffer = Buffer.alloc(0);
+    }
+
 
     var redirectTarget = result.redirectTarget;
     if (redirectTarget) {
         return _renderResultCode(
+            sleepBuffer,
             Buffer.from(util.format('res.redirect(%s);\n', generateCodeFromPart(redirectTarget, 'redirectTarget'))),
-            cookieBuffer, headerBuffer, end);
+            Buffer.concat([cookieBuffer, headerBuffer]), end);
     }
     // 需要我们处理的结果
     if (result.schema) {
@@ -222,15 +214,15 @@ function renderResultCode(result, end = false) {
         var s3 = 'exportJson(definitions,jsonSchema).then(json => {\n' +
             '                res.send(json);\n' +
             '            });\n';
-        return _renderResultCode(Buffer.from(s1 + s2 + s3), cookieBuffer, headerBuffer, end);
+        return _renderResultCode(sleepBuffer, Buffer.from(s1 + s2 + s3), Buffer.concat([cookieBuffer, headerBuffer]), end);
     }
     var code = result.status || 200;
     if (result.statusText) {
-        return _renderResultCode(Buffer.from(util.format('res.status(%d).send("%s");\n', code, result.statusText))
-            , cookieBuffer, headerBuffer, end);
+        return _renderResultCode(sleepBuffer, Buffer.from(util.format('res.status(%d).send("%s");\n', code, result.statusText))
+            , Buffer.concat([cookieBuffer, headerBuffer]), end);
     } else
-        return _renderResultCode(Buffer.from(util.format('res.sendStatus(%d);\n', code))
-            , cookieBuffer, headerBuffer, end);
+        return _renderResultCode(sleepBuffer, Buffer.from(util.format('res.sendStatus(%d);\n', code))
+            , Buffer.concat([cookieBuffer, headerBuffer]), end);
 }
 
 /**

@@ -29,6 +29,37 @@ export const SchemaSuggest = {
         schema.definitions.response.properties["condition"] = {
             "#ref": "#/definitions/scriptObject"
         };
+
+        schema.definitions.response.properties["hold"] = {
+            "type": "object",
+            "description": "ms-time to take this response.",
+            "properties": {
+                "multipleOf": {
+                    "$ref": "#/definitions/multipleOf"
+                },
+                "exclusiveMinimum": {
+                    "$ref": "#/definitions/exclusiveMinimum"
+                },
+                "default": {
+                    "$ref": "#/definitions/default"
+                },
+                "maximum": {
+                    "$ref": "#/definitions/maximum"
+                },
+                "exclusiveMaximum": {
+                    "$ref": "#/definitions/exclusiveMaximum"
+                },
+                "minimum": {
+                    "$ref": "#/definitions/minimum"
+                },
+                "title": {
+                    "$ref": "http://json-schema.org/draft-04/schema#/properties/title"
+                },
+                "description": {
+                    "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+                }
+            }
+        };
         // 加入更多info
 
         schema.definitions.info.properties["id"] = {
