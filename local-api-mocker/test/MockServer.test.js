@@ -135,6 +135,10 @@ describe("MockServer", function () {
             const server = new MockServer(dir + "/mockPathParameter");
             // server.start();
         });
+        it("休眠", function () {
+            const server = new MockServer(dir + "/mockSleep");
+            // server.start();
+        });
 
     })
 });
