@@ -98,6 +98,8 @@ function setupServer(devServer, home, watcher) {
                 }
                 hook(devServer);
             });
+
+            resolve({server, mockAPILength});
         });
     });
 }
@@ -111,11 +113,23 @@ function forLocalFile(filePath, devServer, dir, watcher) {
     }).then(dir => setupServer(devServer, dir, watcher));
 }
 
+/**
+ *
+ * @return {boolean} 是否应该启用hook
+ */
+function shouldHook() {
+    const config = getConfig();
+    return config !== undefined;
+}
+
+/**
+ * 绑定到webpack devServer
+ * @param devServer
+ */
 function hook(devServer) {
     const config = getConfig();
     // 配置中包括 localApiFile 或者 projectId
     // https://www.npmjs.com/package/git-branch
-    // console.log(config);
     if (!config)
         return;
     const {localApiFile, mockDir} = config;
@@ -137,4 +151,4 @@ function hook(devServer) {
     }
 }
 
-module.exports = {hook};
+module.exports = {hook, shouldHook};
