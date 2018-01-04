@@ -41,6 +41,8 @@ class MockServer {
         this.validParameter = this.validParameter.bind(this);
         this.buildJsonSchema = this.buildJsonSchema.bind(this);
         this._buildJsonSchema = this._buildJsonSchema.bind(this);
+        this.stop = this.stop.bind(this);
+        this.start = this.start.bind(this);
 
         // const router = jsonServer.router('db.json');
         const middlewares = jsonServer.defaults();
@@ -272,9 +274,13 @@ class MockServer {
     start(port) {
         // server.use(router);
         let realPort = port || 3000;
-        this.server.listen(realPort, () => {
+        this.toClose = this.server.listen(realPort, () => {
             console.log('Mock Server is running on ' + realPort)
         });
+    }
+
+    stop() {
+        this.toClose.close();
     }
 }
 
