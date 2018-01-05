@@ -406,7 +406,7 @@ module.exports = {
      * @param cb 完成回调
      */
     createServerFromLocalFile(filePath, dir, cb) {
-        createServer('file://' + path.resolve(filePath), dir, cb);
+        createServer(path.join('file://', path.resolve(filePath)), dir, cb);
     },
 
     /**

@@ -34,7 +34,7 @@ function getRemoteFile(originArguments) {
     // 将这个文件转换为绝对路径
     if (!originArguments.localApiFile)
         throw '必须输入localApiFile';
-    return 'file://' + path.resolve(originArguments.localApiFile);
+    return path.json('file://', path.resolve(originArguments.localApiFile));
 }
 
 function toProxy(server, port) {

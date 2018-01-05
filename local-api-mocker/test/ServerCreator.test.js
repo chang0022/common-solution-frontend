@@ -30,7 +30,7 @@ describe('ServerCreator', function () {
         var stream = fs.createWriteStream(entryApiFilePath, {encoding: 'utf8'});
         var promise = new Promise(function (resolve, reject) {
             stream.end(Buffer.from(JSON.stringify(context)), function () {
-                createServer("file://" + entryApiFilePath, workingDir, resolve);
+                createServer(path.join("file://", entryApiFilePath), workingDir, resolve);
             });
         });
 
